@@ -44,13 +44,28 @@ steps:
     command: 'build'
     arguments: '--no-restore --configuration $(buildConfiguration)'
     projects: '**/*.csproj'
+    
+    
+#---------------------------------Delete from here
+- script: 'dotnet new tool-manifest'
+  displayName: 'The command creates a file named .config/dotnet-tools.json.'
 
-- task: DotNetCoreCLI@2
-  displayName: 'Install .NET Core tools from local manifest'
-  inputs:
-    command: custom
-    custom: tool
-    arguments: 'restore'
+- script: 'dotnet tool install dotnet-reportgenerator-globaltool'
+  displayName: 'This command installs the latest version of ReportGenerator and adds an entry to the tool manifest file.'
+  
+- script: 'dotnet add Tailspin.SpaceGame.Web.Tests package coverlet.msbuild'
+  displayName: 'add the coverlet.msbuild package to the Tailspin.SpaceGame.Web.Tests project'
+  
+#---------------------------------to here
+
+#skip for now, util si elimino lo anterio y las tareas se hacen de forma local.
+#- task: DotNetCoreCLI@2
+#  displayName: 'Install .NET Core tools from local manifest'
+#  inputs:
+#    command: custom
+#    custom: tool
+#    arguments: 'restore'
+# 
 
 - task: DotNetCoreCLI@2
   displayName: 'Run unit tests - $(buildConfiguration)'
